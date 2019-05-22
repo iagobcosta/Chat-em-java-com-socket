@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.app.frame;
 
 import java.io.IOException;
@@ -90,7 +85,7 @@ public class ClienteFrame extends javax.swing.JFrame {
 	private void connected(ChatMessage message) {
 		if (message.getText().equals("NO")) {
 			txtName.setText("");
-			JOptionPane.showMessageDialog(this, "Nome de usuário já em uso tente outro nome!");
+			JOptionPane.showMessageDialog(this, "Nome de usuï¿½rio jï¿½ em uso tente outro nome!");
 			return;
 		}
 
@@ -119,7 +114,7 @@ public class ClienteFrame extends javax.swing.JFrame {
 		txtAreaReceive.setText("");
 		txtAreaSend.setText("");
 
-		JOptionPane.showMessageDialog(this, "Você saiu do chat");
+		JOptionPane.showMessageDialog(this, "Vocï¿½ saiu do chat");
 
 	}
 
@@ -367,7 +362,7 @@ public class ClienteFrame extends javax.swing.JFrame {
 			String dataFormatada = formato.format(data);
 			message.setData(dataFormatada);
 
-			txtAreaReceive.append("Você disse: " + text + "\n");
+			txtAreaReceive.append("Vocï¿½ disse: " + text + "\n");
 
 			service.send(message);
 
