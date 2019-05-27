@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 package com.app.service;
-
+// Importações das bibliotecas
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -25,11 +25,14 @@ import com.app.bean.ChatMessage.Action;
  * @author iago
  */
 public class ServidorService {
-
+    //Variável ServerSocket para criar um servidor em uma determinada porta.
     private ServerSocket serverSocket;
+    //Variável Socket para abrir uma conecxão com o servidor.
     private Socket socket;
+    //Várialvel mapOnlines para pegar todos clientes que se conectat com o servidor.
     private Map<String, ObjectOutputStream> mapOnlines = new HashMap<String, ObjectOutputStream>();
 
+    //Construtor da classe ServidorService abri uma conecxão com servidor na porta 5555 com socket.
     public ServidorService() {
         try {
             serverSocket = new ServerSocket(5555);
@@ -47,6 +50,8 @@ public class ServidorService {
         }
     }
 
+    //Classe ListenerSocket para pegar output e input do ObjectOutputStream e o 
+    //ObjectInputStream de cada cliente conectado para envio de menssagem de cada cliente.
     private class ListenerSocket implements Runnable {
 
         private ObjectOutputStream output;
@@ -63,6 +68,8 @@ public class ServidorService {
 
         }
 
+        //Método Run vai ficar sempre escutando quando estiver qualquer alteração do cliente como conectar, desconectar,
+        //Enviar menssagem para um cliente ou para todos
         @Override
         public void run() {
             ChatMessage message = null;
@@ -102,6 +109,7 @@ public class ServidorService {
         }
     }
 
+    //Método de conexão do cliente com o servidor .
     private boolean connect(ChatMessage message, ObjectOutputStream output) {
         if (mapOnlines.size() == 0) {
             message.setText("YES");
@@ -120,6 +128,7 @@ public class ServidorService {
 
     }
 
+    //Método para desconectar o cliente com servidor
     private void disconnect(ChatMessage message, ObjectOutputStream output) {
         mapOnlines.remove(message.getNome());
 
@@ -131,6 +140,7 @@ public class ServidorService {
         System.out.print(" User " + message.getNome() + " saiu da chat " + "\n");
     }
 
+    //Método para enviar mensagem para todos os cliente que estão online
     private void sendAll(ChatMessage message) {
         for (Map.Entry<String, ObjectOutputStream> kv : mapOnlines.entrySet()) {
             if (!kv.getKey().equals(message.getNome())) {
@@ -145,6 +155,7 @@ public class ServidorService {
         }
     }
 
+    //método para verificar qual cliente que esta conectado com servidor e pegar o nome do cliente conectado
     private void sendOnlines() {
 
         Set<String> setNames = new HashSet<String>();
@@ -168,7 +179,8 @@ public class ServidorService {
 
         }
     }
-
+    
+    //Método para receber o objeto cliente e todas as variáveis
     private void send(ChatMessage message, ObjectOutputStream output) {
         try {
             output.writeObject(message);
@@ -177,6 +189,7 @@ public class ServidorService {
         }
     }
 
+    //Método para enviar menssagem privada para o cliente selecionado na lista
     private void sendUser(ChatMessage message) {
         for (Map.Entry<String, ObjectOutputStream> kv : mapOnlines.entrySet()) {
             if (kv.getKey().equals(message.getNameReserved())) {
